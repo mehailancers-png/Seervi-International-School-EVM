@@ -1,284 +1,215 @@
 * {
+  box-sizing: border-box;
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: Arial, Helvetica, sans-serif;
 }
 
 body {
   min-height: 100vh;
-  background: linear-gradient(135deg, #e8f1fb, #f8fbff);
-  color: #172033;
+  background: linear-gradient(135deg, #e8f3ff, #f7fbff);
+  color: #102a43;
 }
 
 .top-header {
-  width: 100%;
-  min-height: 92px;
-  padding: 16px 6%;
-  background: linear-gradient(135deg, #0b315c, #145b9b);
+  background: linear-gradient(135deg, #062b54, #0b5c9e);
   color: white;
+  padding: 18px 6%;
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 18px;
-  box-shadow: 0 4px 14px rgba(11, 49, 92, 0.25);
+  gap: 20px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.18);
 }
 
 .school-brand {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 15px;
 }
 
 .logo {
-  width: 58px;
-  height: 58px;
-  min-width: 58px;
-  border-radius: 50%;
+  width: 68px;
+  height: 68px;
   background: white;
-  border: 3px solid #f5c542;
+  border-radius: 50%;
+  overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
+  border: 3px solid rgba(255, 255, 255, 0.65);
 }
 
 .logo img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
-  padding: 3px;
+  object-fit: cover;
 }
 
 .school-brand h1 {
-  font-size: 22px;
-  letter-spacing: 0.4px;
+  font-size: 24px;
+  letter-spacing: 0.7px;
 }
 
 .school-brand p {
   margin-top: 5px;
-  font-size: 13px;
-  color: #dbeafe;
+  font-size: 14px;
+  opacity: 0.9;
 }
 
 .dashboard-btn {
-  display: inline-block;
+  background: white;
+  color: #0b4e85;
   text-decoration: none;
-  background: #f5c542;
-  color: #172033;
-  padding: 12px 18px;
-  border-radius: 8px;
-  font-weight: 700;
-  font-size: 14px;
-  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.18);
+  font-weight: bold;
+  padding: 12px 17px;
+  border-radius: 10px;
+  transition: 0.25s;
+}
+
+.dashboard-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.2);
 }
 
 .main-container {
-  width: 92%;
-  max-width: 1050px;
+  width: min(1100px, 94%);
   margin: 35px auto;
 }
 
 .evm-box,
 .dashboard-box {
   background: white;
-  border-radius: 16px;
+  border-radius: 20px;
   padding: 30px;
-  border: 1px solid #d8e3f0;
-  box-shadow: 0 10px 30px rgba(20, 60, 100, 0.14);
+  box-shadow: 0 14px 35px rgba(15, 61, 102, 0.16);
+  border: 1px solid #d5e9fb;
 }
 
-.evm-title,
-.dashboard-heading {
+.election-badge {
+  width: fit-content;
+  margin: 0 auto 15px;
+  background: #dbeeff;
+  color: #0b4e85;
+  border: 1px solid #a9d4f5;
+  padding: 7px 13px;
+  border-radius: 30px;
+  font-weight: bold;
+  font-size: 13px;
+}
+
+.evm-title {
   text-align: center;
   margin-bottom: 28px;
 }
 
-.evm-title h2,
-.dashboard-heading h2 {
-  color: #0b315c;
-  font-size: 29px;
-  margin-bottom: 9px;
+.evm-title h2 {
+  color: #083d6b;
+  font-size: 30px;
+  margin-bottom: 8px;
 }
 
-.evm-title p,
-.dashboard-heading p {
-  color: #64748b;
-  font-size: 15px;
+.evm-title p {
+  color: #58728b;
+  font-size: 16px;
 }
 
 .candidate-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
   gap: 15px;
 }
 
 .candidate-card {
-  display: flex;
+  display: grid;
+  grid-template-columns: 58px 80px 1fr 130px;
   align-items: center;
-  gap: 16px;
-  padding: 15px 17px;
-  border: 2px solid #dce7f3;
-  border-radius: 12px;
-  background: #fbfdff;
+  gap: 18px;
+  padding: 15px 18px;
+  background: #f7fbff;
+  border: 1px solid #cfe7fa;
+  border-radius: 15px;
+  transition: 0.25s;
+}
+
+.candidate-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 22px rgba(18, 88, 143, 0.13);
 }
 
 .serial {
-  width: 40px;
-  height: 40px;
-  min-width: 40px;
+  width: 42px;
+  height: 42px;
   border-radius: 50%;
-  background: #0b315c;
-  color: white;
   display: flex;
   align-items: center;
   justify-content: center;
+  background: #0b5c9e;
+  color: white;
+  font-size: 19px;
   font-weight: bold;
 }
 
 .symbol {
-  width: 58px;
-  min-width: 58px;
-  text-align: center;
-  font-size: 36px;
+  width: 65px;
+  height: 65px;
+  background: white;
+  border: 1px solid #bdddf5;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.candidate-info {
-  flex: 1;
+.symbol img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 6px;
 }
 
 .candidate-info h3 {
+  color: #103c63;
   font-size: 20px;
-  color: #172033;
   margin-bottom: 5px;
 }
 
-.candidate-info p,
-.result-card p {
+.candidate-info p {
+  color: #67829a;
   font-size: 14px;
-  color: #64748b;
 }
 
 .vote-btn {
   border: none;
-  background: linear-gradient(135deg, #d62828, #a91414);
+  border-radius: 10px;
+  padding: 13px 20px;
+  background: linear-gradient(135deg, #0b5c9e, #087a57);
   color: white;
-  font-size: 15px;
+  font-size: 16px;
   font-weight: bold;
-  padding: 13px 23px;
-  border-radius: 8px;
   cursor: pointer;
+  transition: 0.25s;
+}
+
+.vote-btn:hover:not(:disabled) {
+  transform: scale(1.04);
+  box-shadow: 0 8px 18px rgba(9, 101, 121, 0.25);
 }
 
 .vote-btn:disabled {
-  opacity: 0.5;
   cursor: not-allowed;
+  opacity: 0.5;
 }
 
 .message-box {
-  margin-top: 23px;
-  padding: 15px;
-  border-radius: 9px;
+  margin-top: 22px;
+  background: #edf7ff;
+  border: 1px solid #c5e3fa;
+  color: #175786;
   text-align: center;
-  background: #e0f2fe;
-  color: #075985;
-  font-weight: bold;
-  border: 1px solid #bae6fd;
-}
-
-.total-votes-card {
-  max-width: 430px;
-  margin: 0 auto 27px;
-  text-align: center;
-  padding: 23px;
-  border-radius: 14px;
-  background: linear-gradient(135deg, #0b315c, #145b9b);
-  color: white;
-}
-
-#totalVotes {
-  margin-top: 7px;
-  font-size: 46px;
-  font-weight: bold;
-  color: #f5c542;
-}
-
-.results-grid {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 18px;
-}
-
-.result-card {
-  padding: 19px;
-  border-radius: 12px;
-  border: 1px solid #dce7f3;
-  background: #fbfdff;
-}
-
-.result-top {
-  display: flex;
-  align-items: center;
-  gap: 11px;
-}
-
-.result-symbol {
-  font-size: 31px;
-}
-
-.result-top h3 {
-  font-size: 18px;
-}
-
-.vote-number {
-  margin-top: 15px;
-  font-size: 38px;
-  font-weight: bold;
-  color: #0b315c;
-}
-
-.progress-bar {
-  height: 11px;
-  margin-top: 15px;
-  overflow: hidden;
+  padding: 14px;
   border-radius: 10px;
-  background: #dce7f3;
-}
-
-.progress-fill {
-  height: 100%;
-  width: 0%;
-  border-radius: 10px;
-  background: linear-gradient(90deg, #22a06b, #4ade80);
-  transition: width 0.6s ease;
-}
-
-.dashboard-actions {
-  margin-top: 28px;
-  display: flex;
-  justify-content: center;
-  gap: 14px;
-  flex-wrap: wrap;
-}
-
-.refresh-btn,
-.reset-btn {
-  border: none;
-  padding: 12px 19px;
-  border-radius: 8px;
-  color: white;
-  font-size: 14px;
   font-weight: bold;
-  cursor: pointer;
-}
-
-.refresh-btn {
-  background: #0b315c;
-}
-
-.reset-btn {
-  background: #d62828;
 }
 
 .vote-popup {
@@ -286,236 +217,232 @@ body {
   position: fixed;
   inset: 0;
   z-index: 9999;
-  background: rgba(11, 49, 92, 0.62);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-.popup-card {
-  width: min(420px, 100%);
-  background: white;
-  border-radius: 20px;
-  padding: 34px 25px;
-  text-align: center;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
-  animation: popupEnter 0.35s ease;
-}
-
-.success-icon {
-  width: 70px;
-  height: 70px;
-  margin: 0 auto 16px;
-  border-radius: 50%;
-  background: #22a06b;
-  color: white;
-  font-size: 43px;
-  font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
-
-.popup-card h2 {
-  color: #0b315c;
-  font-size: 27px;
-  margin-bottom: 12px;
-}
-
-.popup-card p {
-  color: #334155;
-  font-size: 17px;
-  line-height: 1.6;
-}
-
-.popup-countdown {
-  margin-top: 22px;
-  padding: 13px;
-  border-radius: 10px;
-  background: #eff6ff;
-  color: #0b315c;
-  font-weight: bold;
-}
-
-#popupTimer {
-  color: #d62828;
-  font-size: 22px;
-}
-
-footer {
-  padding: 20px;
-  text-align: center;
-  color: #64748b;
-  font-size: 14px;
-}
-
-@keyframes popupEnter {
-  from {
-    opacity: 0;
-    transform: scale(0.85) translateY(20px);
-  }
-
-  to {
-    opacity: 1;
-    transform: scale(1) translateY(0);
-  }
-}
-
-@media (max-width: 650px) {
-  .top-header {
-    padding: 16px;
-    justify-content: center;
-    text-align: center;
-  }
-
-  .school-brand {
-    justify-content: center;
-  }
-
-  .school-brand h1 {
-    font-size: 17px;
-  }
-
-  .dashboard-btn {
-    width: 100%;
-  }
-
-  .main-container {
-    width: 94%;
-    margin: 22px auto;
-  }
-
-  .evm-box,
-  .dashboard-box {
-    padding: 18px;
-  }
-
-  .evm-title h2,
-  .dashboard-heading h2 {
-    font-size: 23px;
-  }
-
-  .candidate-card {
-    flex-wrap: wrap;
-    gap: 11px;
-    padding: 14px;
-  }
-
-  .candidate-info {
-    min-width: 180px;
-  }
-
-  .vote-btn {
-    width: 100%;
-  }
-
-  .results-grid {
-    grid-template-columns: 1fr;
-  }
-
-  .dashboard-actions {
-    flex-direction: column;
-  }
-
-  .refresh-btn,
-  .reset-btn {
-    width: 100%;
-  }
-  }  
-
-/* Vote success popup */
-.message-box {
-  display: none;
-}
-
-.vote-popup {
-  display: none;
-  position: fixed;
-  inset: 0;
-  z-index: 99999;
-  background: rgba(4, 24, 48, 0.72);
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
+  background: rgba(3, 28, 53, 0.72);
   backdrop-filter: blur(5px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
 }
 
 .popup-card {
   width: min(430px, 100%);
-  background: linear-gradient(145deg, #ffffff, #eef7ff);
-  border: 2px solid #b8dcff;
+  padding: 34px 26px;
   border-radius: 24px;
-  padding: 34px 26px 28px;
   text-align: center;
+  background: linear-gradient(145deg, #ffffff, #eaf6ff);
+  border: 2px solid #b8dcff;
   box-shadow: 0 25px 70px rgba(0, 0, 0, 0.35);
-  animation: popupSuccess 0.45s ease;
+  animation: popupSuccess 0.4s ease;
 }
 
 .success-icon {
   width: 82px;
   height: 82px;
-  margin: 0 auto 17px;
+  margin: 0 auto 16px;
   border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   background: linear-gradient(135deg, #22a06b, #4ade80);
   color: white;
   font-size: 50px;
   font-weight: bold;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 8px 20px rgba(34, 160, 107, 0.35);
 }
 
 .popup-card h2 {
-  color: #0b315c;
+  color: #083d6b;
   font-size: 29px;
   margin-bottom: 12px;
 }
 
 .popup-card p {
-  color: #334155;
+  color: #3c566e;
   font-size: 18px;
-  line-height: 1.65;
-  margin: 0;
-}
-
-.popup-card p b {
-  color: #0b315c;
-  font-size: 20px;
+  line-height: 1.6;
 }
 
 .popup-countdown {
-  margin-top: 23px;
+  margin-top: 22px;
   padding: 14px;
   border-radius: 12px;
   background: #dbeeff;
-  color: #0b315c;
-  font-size: 15px;
-  font-weight: bold;
+  color: #083d6b;
   border: 1px solid #b8dcff;
+  font-weight: bold;
 }
 
 #popupTimer {
   display: inline-flex;
-  min-width: 34px;
+  width: 34px;
   height: 34px;
-  margin-left: 5px;
-  border-radius: 50%;
+  margin: 0 4px;
   align-items: center;
   justify-content: center;
+  border-radius: 50%;
   background: #d62828;
   color: white;
   font-size: 18px;
 }
 
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 22px;
+}
+
+.result-panel {
+  background: #f7fbff;
+  border: 1px solid #cfe7fa;
+  border-radius: 16px;
+  padding: 20px;
+}
+
+.result-panel h2 {
+  color: #083d6b;
+  margin-bottom: 10px;
+  font-size: 22px;
+}
+
+.total-votes {
+  color: #4e6f8b;
+  margin-bottom: 18px;
+  font-weight: bold;
+}
+
+.result-row {
+  display: grid;
+  grid-template-columns: 1fr 2fr 40px;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.result-name {
+  font-size: 14px;
+  font-weight: bold;
+  color: #234b6d;
+}
+
+.result-bar-area {
+  height: 14px;
+  border-radius: 20px;
+  overflow: hidden;
+  background: #dcecf8;
+}
+
+.result-bar {
+  height: 100%;
+  min-width: 3px;
+  border-radius: 20px;
+  background: linear-gradient(90deg, #0b5c9e, #21a36c);
+  transition: width 0.4s ease;
+}
+
+.result-votes {
+  text-align: right;
+  color: #083d6b;
+  font-weight: bold;
+}
+
+.winner-box {
+  margin-top: 18px;
+  padding: 13px;
+  background: #e5f8ee;
+  border: 1px solid #b9e8cd;
+  border-radius: 10px;
+  color: #16623e;
+  font-weight: bold;
+  line-height: 1.45;
+}
+
+.overall-summary {
+  margin-top: 25px;
+  text-align: center;
+  background: #edf7ff;
+  border: 1px solid #c5e3fa;
+  padding: 20px;
+  border-radius: 14px;
+}
+
+.overall-summary h2 {
+  color: #083d6b;
+  margin-bottom: 10px;
+}
+
+.overall-summary p {
+  margin: 6px 0;
+  color: #4b6d88;
+}
+
+.reset-btn {
+  display: block;
+  margin: 25px auto 0;
+  border: none;
+  border-radius: 10px;
+  background: #c92a2a;
+  color: white;
+  padding: 13px 20px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+footer {
+  text-align: center;
+  padding: 20px;
+  color: #4d6a82;
+  font-size: 14px;
+}
+
 @keyframes popupSuccess {
   from {
     opacity: 0;
-    transform: scale(0.7) translateY(35px);
+    transform: scale(0.75) translateY(35px);
   }
 
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+@media (max-width: 720px) {
+  .top-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .school-brand {
+    flex-direction: column;
+  }
+
+  .candidate-card {
+    grid-template-columns: 45px 65px 1fr;
+    gap: 12px;
+  }
+
+  .vote-btn {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .dashboard-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .school-brand h1 {
+    font-size: 20px;
+  }
+
+  .evm-title h2 {
+    font-size: 25px;
+  }
+
+  .result-row {
+    grid-template-columns: 1fr;
+    gap: 5px;
+  }
+
+  .result-votes {
+    text-align: left;
   }
 }
