@@ -38,40 +38,20 @@
         <div class="serial">1</div>
         <div class="symbol"><img src="boy1.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Boy Candidate 1</h3>
+          <h3>Yaduraaj Singh Charan</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 1')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadBoyVote('Yaduraaj Singh Charan')">VOTE</button>
       </div>
 
       <div class="candidate-card">
         <div class="serial">2</div>
         <div class="symbol"><img src="boy2.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Boy Candidate 2</h3>
+          <h3>Rana Aaditya Singh</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 2')">VOTE</button>
-      </div>
-
-      <div class="candidate-card">
-        <div class="serial">3</div>
-        <div class="symbol"><img src="boy3.png" alt="Candidate Symbol"></div>
-        <div class="candidate-info">
-          <h3>Head Boy Candidate 3</h3>
-          <p>Symbol: Candidate Symbol</p>
-        </div>
-        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 3')">VOTE</button>
-      </div>
-
-      <div class="candidate-card">
-        <div class="serial">4</div>
-        <div class="symbol"><img src="boy4.png" alt="Candidate Symbol"></div>
-        <div class="candidate-info">
-          <h3>Head Boy Candidate 4</h3>
-          <p>Symbol: Candidate Symbol</p>
-        </div>
-        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 4')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadBoyVote('Rana Aaditya Singh')">VOTE</button>
       </div>
 
     </div>
@@ -105,10 +85,8 @@ const ELECTION_COMPLETE_KEY = "seervi_election_completed";
 const LOCK_DURATION = 45;
 
 const headBoyCandidates = [
-  "Head Boy Candidate 1",
-  "Head Boy Candidate 2",
-  "Head Boy Candidate 3",
-  "Head Boy Candidate 4"
+  "Yaduraaj Singh Charan",
+  "Rana Aaditya Singh"
 ];
 
 function getVotes(key, candidates) {
@@ -149,9 +127,7 @@ function setButtonsDisabled(disabled) {
 function castHeadBoyVote(candidateName) {
   const lockUntil = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
 
-  if (Date.now() < lockUntil) {
-    return;
-  }
+  if (Date.now() < lockUntil) return;
 
   setButtonsDisabled(true);
 
@@ -166,7 +142,11 @@ function startFinalLock() {
   const popup = document.getElementById("votePopup");
   const popupTimer = document.getElementById("popupTimer");
 
-  const lockUntil = Date.now() + (LOCK_DURATION * 1000);
+  const existingLock = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
+  const lockUntil = existingLock > Date.now()
+    ? existingLock
+    : Date.now() + (LOCK_DURATION * 1000);
+
   localStorage.setItem(ELECTION_LOCK_KEY, lockUntil);
 
   popup.style.display = "flex";
