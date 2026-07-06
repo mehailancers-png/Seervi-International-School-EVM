@@ -68,17 +68,15 @@ const HEAD_BOY_KEY = "seervi_headboy_votes";
 const HEAD_GIRL_KEY = "seervi_headgirl_votes";
 
 const headBoyCandidates = [
-  "Head Boy Candidate 1",
-  "Head Boy Candidate 2",
-  "Head Boy Candidate 3",
-  "Head Boy Candidate 4"
+  "Yaduraaj Singh Charan",
+  "Rana Aaditya Singh"
 ];
 
 const headGirlCandidates = [
-  "Head Girl Candidate 1",
-  "Head Girl Candidate 2",
-  "Head Girl Candidate 3",
-  "Head Girl Candidate 4"
+  "Khushi",
+  "Disha",
+  "Meherdeep Kaur",
+  "Paridhi"
 ];
 
 function getVotes(key, candidates) {
@@ -156,7 +154,8 @@ function renderResults(key, candidates, resultElementId, totalElementId, winnerE
   } else if (leaders.length > 1) {
     winnerElement.textContent = "Current Tie: " + leaders.join(", ");
   } else {
-    winnerElement.textContent = "Current Leader: " + leaders[0] + " with " + highestVotes + " votes";
+    winnerElement.textContent =
+      "Current Leader: " + leaders[0] + " with " + highestVotes + " votes";
   }
 
   return totalVotes;
@@ -186,9 +185,7 @@ function updateDashboard() {
 function resetElection() {
   const confirmed = confirm("Are you sure you want to reset all Head Boy and Head Girl votes?");
 
-  if (!confirmed) {
-    return;
-  }
+  if (!confirmed) return;
 
   localStorage.removeItem(HEAD_BOY_KEY);
   localStorage.removeItem(HEAD_GIRL_KEY);
