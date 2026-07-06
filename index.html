@@ -3,224 +3,209 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seervi International School - EVM Polling Booth</title>
+  <title>Head Boy Election | Seervi International School</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="top-header">
-    <div class="school-brand">
-      <div class="logo">
-        <img src="logo.png" alt="Seervi International School Logo">
-      </div>
-
-      <div>
-        <h1>SEERVI INTERNATIONAL SCHOOL</h1>
-        <p>School Election 2026 - Electronic Voting Machine</p>
-      </div>
+<header class="top-header">
+  <div class="school-brand">
+    <div class="logo">
+      <img src="logo.png" alt="Seervi International School Logo">
     </div>
-
-    <a href="dashboard.html" class="dashboard-btn">Open Dashboard</a>
-  </header>
-
-  <main class="main-container">
-    <section class="evm-box">
-
-      <div class="evm-title">
-        <h2>Electronic Voting Machine</h2>
-        <p>Select one candidate and press the Vote button.</p>
-      </div>
-
-      <div class="candidate-list">
-
-        <div class="candidate-card">
-          <div class="serial">1</div>
-          <div class="symbol">🌟</div>
-
-          <div class="candidate-info">
-            <h3>Avinash Gehlot</h3>
-            <p>Symbol: Star</p>
-          </div>
-
-          <button class="vote-btn" onclick="castVote('Avinash Gehlot')">
-            VOTE
-          </button>
-        </div>
-
-        <div class="candidate-card">
-          <div class="serial">2</div>
-          <div class="symbol">🌳</div>
-
-          <div class="candidate-info">
-            <h3>Surendra Goyal</h3>
-            <p>Symbol: Tree</p>
-          </div>
-
-          <button class="vote-btn" onclick="castVote('Surendra Goyal')">
-            VOTE
-          </button>
-        </div>
-
-        <div class="candidate-card">
-          <div class="serial">3</div>
-          <div class="symbol">📚</div>
-
-          <div class="candidate-info">
-            <h3>Yogi Laxman Nath</h3>
-            <p>Symbol: Book</p>
-          </div>
-
-          <button class="vote-btn" onclick="castVote('Yogi Laxman Nath')">
-            VOTE
-          </button>
-        </div>
-
-        <div class="candidate-card">
-          <div class="serial">4</div>
-          <div class="symbol">⚽</div>
-
-          <div class="candidate-info">
-            <h3>Dilip Choudhary</h3>
-            <p>Symbol: Football</p>
-          </div>
-
-          <button class="vote-btn" onclick="castVote('Dilip Choudhary')">
-            VOTE
-          </button>
-        </div>
-
-      </div>
-
-      <div id="messageBox" class="message-box">
-        Machine is ready. Please cast your vote carefully.
-      </div>
-
-    </section>
-  </main>
-
-  <div id="votePopup" class="vote-popup">
-    <div class="popup-card">
-      <div class="success-icon">✓</div>
-
-      <h2>Vote Recorded</h2>
-
-      <p id="popupText">
-        Your vote has been cast successfully.<br>
-        Thank you for participating in the election.
-      </p>
-
-      <div class="popup-countdown">
-        Next voter can vote in
-        <span id="popupTimer">45</span>
-        seconds
-      </div>
+    <div>
+      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+      <p>School Council Election - Electronic Voting Machine</p>
     </div>
   </div>
 
-  <footer>
-    <p>School Election Working Model | Seervi International School</p>
-  </footer>
+  <a href="dashboard.html" class="dashboard-btn">Open Dashboard</a>
+</header>
 
-  <script>
-    const STORAGE_KEY = "seervi_evm_votes";
-    const LOCK_DURATION = 45;
+<main class="main-container">
+  <section class="evm-box">
 
-    let machineLocked = false;
-    let activeTimer = null;
+    <div class="election-badge">STEP 1 OF 2</div>
 
-    function defaultVotes() {
-      return {
-        "Avinash Gehlot": 0,
-        "Surendra Goyal": 0,
-        "Yogi Laxman Nath": 0,
-        "Dilip Choudhary": 0
-      };
-    }
+    <div class="evm-title">
+      <h2>Head Boy Election</h2>
+      <p>Select one candidate for Head Boy and press Vote.</p>
+    </div>
 
-    function getVotes() {
-      const savedVotes = localStorage.getItem(STORAGE_KEY);
+    <div class="candidate-list">
 
-      if (!savedVotes) {
-        return defaultVotes();
-      }
+      <div class="candidate-card">
+        <div class="serial">1</div>
+        <div class="symbol"><img src="boy1.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Boy Candidate 1</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 1')">VOTE</button>
+      </div>
 
-      try {
-        const votes = JSON.parse(savedVotes);
+      <div class="candidate-card">
+        <div class="serial">2</div>
+        <div class="symbol"><img src="boy2.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Boy Candidate 2</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 2')">VOTE</button>
+      </div>
 
-        return {
-          "Avinash Gehlot": Number(votes["Avinash Gehlot"]) || 0,
-          "Surendra Goyal": Number(votes["Surendra Goyal"]) || 0,
-          "Yogi Laxman Nath": Number(votes["Yogi Laxman Nath"]) || 0,
-          "Dilip Choudhary": Number(votes["Dilip Choudhary"]) || 0
-        };
-      } catch (error) {
-        return defaultVotes();
-      }
-    }
+      <div class="candidate-card">
+        <div class="serial">3</div>
+        <div class="symbol"><img src="boy3.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Boy Candidate 3</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 3')">VOTE</button>
+      </div>
 
-    function setVotingButtons(disabled) {
-      const buttons = document.querySelectorAll(".vote-btn");
+      <div class="candidate-card">
+        <div class="serial">4</div>
+        <div class="symbol"><img src="boy4.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Boy Candidate 4</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadBoyVote('Head Boy Candidate 4')">VOTE</button>
+      </div>
 
-      buttons.forEach(function(button) {
-        button.disabled = disabled;
-      });
-    }
+    </div>
 
-    function castVote(candidateName) {
-      if (machineLocked) {
-        return;
-      }
+    <div id="messageBox" class="message-box">
+      Please cast your Head Boy vote carefully.
+    </div>
 
-      machineLocked = true;
-      setVotingButtons(true);
+  </section>
+</main>
 
-      const votes = getVotes();
+<div id="votePopup" class="vote-popup">
+  <div class="popup-card">
+    <div class="success-icon">✓</div>
+    <h2>Votes Recorded</h2>
+    <p>Your votes have been cast successfully.<br>Thank you for participating in the election.</p>
+    <div class="popup-countdown">
+      Next voter can vote in <span id="popupTimer">45</span> seconds
+    </div>
+  </div>
+</div>
 
-      votes[candidateName] = (votes[candidateName] || 0) + 1;
+<footer>
+  <p>School Council Election Working Model | Seervi International School</p>
+</footer>
 
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(votes));
+<script>
+const HEAD_BOY_KEY = "seervi_headboy_votes";
+const ELECTION_LOCK_KEY = "seervi_election_lock_until";
+const ELECTION_COMPLETE_KEY = "seervi_election_completed";
+const LOCK_DURATION = 45;
 
-      const popup = document.getElementById("votePopup");
-      const popupText = document.getElementById("popupText");
-      const popupTimer = document.getElementById("popupTimer");
+const headBoyCandidates = [
+  "Head Boy Candidate 1",
+  "Head Boy Candidate 2",
+  "Head Boy Candidate 3",
+  "Head Boy Candidate 4"
+];
 
-      popupText.innerHTML =
-        "Your vote has been cast successfully.<br>" +
-        "Thank you for participating in the election.";
+function getVotes(key, candidates) {
+  const saved = localStorage.getItem(key);
 
-      popup.style.display = "flex";
-
-      let secondsLeft = LOCK_DURATION;
-      popupTimer.textContent = secondsLeft;
-
-      if (activeTimer) {
-        clearInterval(activeTimer);
-      }
-
-      activeTimer = setInterval(function() {
-        secondsLeft--;
-        popupTimer.textContent = secondsLeft;
-
-        if (secondsLeft <= 0) {
-          clearInterval(activeTimer);
-          activeTimer = null;
-
-          popup.style.display = "none";
-
-          machineLocked = false;
-          setVotingButtons(false);
-
-          document.getElementById("messageBox").textContent =
-            "Machine is ready for the next voter. Please cast your vote carefully.";
-        }
-      }, 1000);
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      machineLocked = false;
-      setVotingButtons(false);
+  if (!saved) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
     });
-  </script>
+    return emptyVotes;
+  }
+
+  try {
+    const votes = JSON.parse(saved);
+    const cleanVotes = {};
+
+    candidates.forEach(function(candidate) {
+      cleanVotes[candidate] = Number(votes[candidate]) || 0;
+    });
+
+    return cleanVotes;
+  } catch (error) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
+    });
+    return emptyVotes;
+  }
+}
+
+function setButtonsDisabled(disabled) {
+  document.querySelectorAll(".vote-btn").forEach(function(button) {
+    button.disabled = disabled;
+  });
+}
+
+function castHeadBoyVote(candidateName) {
+  const lockUntil = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
+
+  if (Date.now() < lockUntil) {
+    return;
+  }
+
+  setButtonsDisabled(true);
+
+  const votes = getVotes(HEAD_BOY_KEY, headBoyCandidates);
+  votes[candidateName] = (votes[candidateName] || 0) + 1;
+
+  localStorage.setItem(HEAD_BOY_KEY, JSON.stringify(votes));
+  window.location.href = "headgirl.html";
+}
+
+function startFinalLock() {
+  const popup = document.getElementById("votePopup");
+  const popupTimer = document.getElementById("popupTimer");
+
+  const lockUntil = Date.now() + (LOCK_DURATION * 1000);
+  localStorage.setItem(ELECTION_LOCK_KEY, lockUntil);
+
+  popup.style.display = "flex";
+  setButtonsDisabled(true);
+
+  const timer = setInterval(function() {
+    const secondsLeft = Math.max(0, Math.ceil((lockUntil - Date.now()) / 1000));
+    popupTimer.textContent = secondsLeft;
+
+    if (secondsLeft <= 0) {
+      clearInterval(timer);
+      popup.style.display = "none";
+      localStorage.removeItem(ELECTION_LOCK_KEY);
+      setButtonsDisabled(false);
+
+      document.getElementById("messageBox").textContent =
+        "Machine is ready for the next voter. Please cast your Head Boy vote carefully.";
+    }
+  }, 250);
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+  const lockUntil = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
+  const electionCompleted = localStorage.getItem(ELECTION_COMPLETE_KEY);
+
+  if (electionCompleted === "true") {
+    localStorage.removeItem(ELECTION_COMPLETE_KEY);
+    startFinalLock();
+    return;
+  }
+
+  if (Date.now() < lockUntil) {
+    startFinalLock();
+  } else {
+    localStorage.removeItem(ELECTION_LOCK_KEY);
+    setButtonsDisabled(false);
+  }
+});
+</script>
 
 </body>
 </html>
