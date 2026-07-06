@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Head Girl Election | Seervi International School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="top-header">
+  <div class="school-brand">
+    <div class="logo">
+      <img src="logo.png" alt="Seervi International School Logo">
+    </div>
+    <div>
+      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+      <p>School Council Election - Electronic Voting Machine</p>
+    </div>
+  </div>
+
+  <a href="dashboard.html" class="dashboard-btn">Open Dashboard</a>
+</header>
+
+<main class="main-container">
+  <section class="evm-box">
+
+    <div class="election-badge">STEP 2 OF 2</div>
+
+    <div class="evm-title">
+      <h2>Head Girl Election</h2>
+      <p>Select one candidate for Head Girl and press Vote.</p>
+    </div>
+
+    <div class="candidate-list">
+
+      <div class="candidate-card">
+        <div class="serial">1</div>
+        <div class="symbol"><img src="girl1.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Girl Candidate 1</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 1')">VOTE</button>
+      </div>
+
+      <div class="candidate-card">
+        <div class="serial">2</div>
+        <div class="symbol"><img src="girl2.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Girl Candidate 2</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 2')">VOTE</button>
+      </div>
+
+      <div class="candidate-card">
+        <div class="serial">3</div>
+        <div class="symbol"><img src="girl3.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Girl Candidate 3</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 3')">VOTE</button>
+      </div>
+
+      <div class="candidate-card">
+        <div class="serial">4</div>
+        <div class="symbol"><img src="girl4.png" alt="Candidate Symbol"></div>
+        <div class="candidate-info">
+          <h3>Head Girl Candidate 4</h3>
+          <p>Symbol: Candidate Symbol</p>
+        </div>
+        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 4')">VOTE</button>
+      </div>
+
+    </div>
+
+    <div class="message-box">
+      Please cast your Head Girl vote carefully.
+    </div>
+
+  </section>
+</main>
+
+<footer>
+  <p>School Council Election Working Model | Seervi International School</p>
+</footer>
+
+<script>
+const HEAD_GIRL_KEY = "seervi_headgirl_votes";
+const ELECTION_LOCK_KEY = "seervi_election_lock_until";
+const ELECTION_COMPLETE_KEY = "seervi_election_completed";
+
+const headGirlCandidates = [
+  "Head Girl Candidate 1",
+  "Head Girl Candidate 2",
+  "Head Girl Candidate 3",
+  "Head Girl Candidate 4"
+];
+
+function getVotes(key, candidates) {
+  const saved = localStorage.getItem(key);
+
+  if (!saved) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
+    });
+    return emptyVotes;
+  }
+
+  try {
+    const votes = JSON.parse(saved);
+    const cleanVotes = {};
+
+    candidates.forEach(function(candidate) {
+      cleanVotes[candidate] = Number(votes[candidate]) || 0;
+    });
+
+    return cleanVotes;
+  } catch (error) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
+    });
+    return emptyVotes;
+  }
+}
+
+function castHeadGirlVote(candidateName) {
+  const lockUntil = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
+
+  if (Date.now() < lockUntil) {
+    return;
+  }
+
+  document.querySelectorAll(".vote-btn").forEach(function(button) {
+    button.disabled = true;
+  });
+
+  const votes = getVotes(HEAD_GIRL_KEY, headGirlCandidates);
+  votes[candidateName] = (votes[candidateName] || 0) + 1;
+
+  localStorage.setItem(HEAD_GIRL_KEY, JSON.stringify(votes));
+  localStorage.setItem(ELECTION_COMPLETE_KEY, "true");
+
+  window.location.href = "index.html";
+}
+</script>
+
+</body>
+</html>
