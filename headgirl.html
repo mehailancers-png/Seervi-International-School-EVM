@@ -38,40 +38,40 @@
         <div class="serial">1</div>
         <div class="symbol"><img src="girl1.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Girl Candidate 1</h3>
+          <h3>Khushi</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 1')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadGirlVote('Khushi')">VOTE</button>
       </div>
 
       <div class="candidate-card">
         <div class="serial">2</div>
         <div class="symbol"><img src="girl2.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Girl Candidate 2</h3>
+          <h3>Disha</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 2')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadGirlVote('Disha')">VOTE</button>
       </div>
 
       <div class="candidate-card">
         <div class="serial">3</div>
         <div class="symbol"><img src="girl3.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Girl Candidate 3</h3>
+          <h3>Meherdeep Kaur</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 3')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadGirlVote('Meherdeep Kaur')">VOTE</button>
       </div>
 
       <div class="candidate-card">
         <div class="serial">4</div>
         <div class="symbol"><img src="girl4.png" alt="Candidate Symbol"></div>
         <div class="candidate-info">
-          <h3>Head Girl Candidate 4</h3>
+          <h3>Paridhi</h3>
           <p>Symbol: Candidate Symbol</p>
         </div>
-        <button class="vote-btn" onclick="castHeadGirlVote('Head Girl Candidate 4')">VOTE</button>
+        <button class="vote-btn" onclick="castHeadGirlVote('Paridhi')">VOTE</button>
       </div>
 
     </div>
@@ -93,10 +93,10 @@ const ELECTION_LOCK_KEY = "seervi_election_lock_until";
 const ELECTION_COMPLETE_KEY = "seervi_election_completed";
 
 const headGirlCandidates = [
-  "Head Girl Candidate 1",
-  "Head Girl Candidate 2",
-  "Head Girl Candidate 3",
-  "Head Girl Candidate 4"
+  "Khushi",
+  "Disha",
+  "Meherdeep Kaur",
+  "Paridhi"
 ];
 
 function getVotes(key, candidates) {
@@ -131,9 +131,7 @@ function getVotes(key, candidates) {
 function castHeadGirlVote(candidateName) {
   const lockUntil = Number(localStorage.getItem(ELECTION_LOCK_KEY)) || 0;
 
-  if (Date.now() < lockUntil) {
-    return;
-  }
+  if (Date.now() < lockUntil) return;
 
   document.querySelectorAll(".vote-btn").forEach(function(button) {
     button.disabled = true;
