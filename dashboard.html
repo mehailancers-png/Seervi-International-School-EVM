@@ -1,157 +1,206 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Seervi International School - EVM Dashboard</title>
+  <title>Election Dashboard | Seervi International School</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
-  <header class="top-header">
-    <div class="school-brand">
-      <div class="logo">
-        <img src="logo.png" alt="Seervi International School Logo">
-      </div>
-      <div>
-        <h1>SEERVI INTERNATIONAL SCHOOL</h1>
-        <p>Election Vote Counting Dashboard</p>
-      </div>
+<header class="top-header">
+  <div class="school-brand">
+    <div class="logo">
+      <img src="logo.png" alt="Seervi International School Logo">
     </div>
-    <a href="index.html" class="dashboard-btn">Back to Voting</a>
-  </header>
+    <div>
+      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+      <p>School Council Election - Live Results Dashboard</p>
+    </div>
+  </div>
 
-  <main class="main-container">
-    <section class="dashboard-box">
-      <div class="dashboard-heading">
-        <h2>Live Election Results</h2>
-        <p>Votes update automatically after every vote.</p>
-      </div>
+  <a href="index.html" class="dashboard-btn">Back to Voting</a>
+</header>
 
-      <div class="total-votes-card">
-        <h3>Total Votes Cast</h3>
-        <div id="totalVotes">0</div>
-      </div>
+<main class="main-container">
+  <section class="dashboard-box">
 
-      <div class="results-grid">
-        <div class="result-card">
-          <div class="result-top">
-            <span class="result-symbol">🌟</span>
-            <h3>Avinash Gehlot</h3>
-          </div>
-          <div class="vote-number" id="avinashVotes">0</div>
-          <p>Votes Received</p>
-          <div class="progress-bar"><div class="progress-fill" id="avinashBar"></div></div>
-        </div>
+    <div class="evm-title">
+      <h2>Election Results Dashboard</h2>
+      <p>Live vote count for Head Boy and Head Girl elections.</p>
+    </div>
 
-        <div class="result-card">
-          <div class="result-top">
-            <span class="result-symbol">🌳</span>
-            <h3>Surendra Goyal</h3>
-          </div>
-          <div class="vote-number" id="surendraVotes">0</div>
-          <p>Votes Received</p>
-          <div class="progress-bar"><div class="progress-fill" id="surendraBar"></div></div>
-        </div>
+    <div class="dashboard-grid">
 
-        <div class="result-card">
-          <div class="result-top">
-            <span class="result-symbol">📚</span>
-            <h3>Yogi Laxman Nath</h3>
-          </div>
-          <div class="vote-number" id="yogiVotes">0</div>
-          <p>Votes Received</p>
-          <div class="progress-bar"><div class="progress-fill" id="yogiBar"></div></div>
-        </div>
+      <section class="result-panel">
+        <h2>Head Boy Election Results</h2>
+        <p class="total-votes">Total Votes Cast: <span id="headBoyTotal">0</span></p>
+        <div id="headBoyResults"></div>
+        <div class="winner-box" id="headBoyWinner">Winner will appear here.</div>
+      </section>
 
-        <div class="result-card">
-          <div class="result-top">
-            <span class="result-symbol">⚽</span>
-            <h3>Dilip Choudhary</h3>
-          </div>
-          <div class="vote-number" id="dilipVotes">0</div>
-          <p>Votes Received</p>
-          <div class="progress-bar"><div class="progress-fill" id="dilipBar"></div></div>
-        </div>
-      </div>
+      <section class="result-panel">
+        <h2>Head Girl Election Results</h2>
+        <p class="total-votes">Total Votes Cast: <span id="headGirlTotal">0</span></p>
+        <div id="headGirlResults"></div>
+        <div class="winner-box" id="headGirlWinner">Winner will appear here.</div>
+      </section>
 
-      <div class="dashboard-actions">
-        <button class="refresh-btn" onclick="refreshDashboard()">Refresh Results</button>
-        <button class="reset-btn" onclick="resetVotes()">Reset Election Data</button>
-      </div>
-    </section>
-  </main>
+    </div>
 
-  <footer>
-    <p>School Election Working Model | Seervi International School</p>
-  </footer>
+    <div class="overall-summary">
+      <h2>Overall Election Summary</h2>
+      <p>Completed Voters: <strong id="completedVoters">0</strong></p>
+      <p>Dashboard updates automatically every second.</p>
+    </div>
 
-  <script>
-    const STORAGE_KEY = "seervi_evm_votes";
+    <button class="reset-btn" onclick="resetElection()">Reset Election Data</button>
 
-    function emptyVotes() {
-      return {
-        "Avinash Gehlot": 0,
-        "Surendra Goyal": 0,
-        "Yogi Laxman Nath": 0,
-        "Dilip Choudhary": 0
-      };
-    }
+  </section>
+</main>
 
-    function getVotes() {
-      const saved = localStorage.getItem(STORAGE_KEY);
+<footer>
+  <p>School Council Election Working Model | Seervi International School</p>
+</footer>
 
-      if (!saved) {
-        return emptyVotes();
-      }
+<script>
+const HEAD_BOY_KEY = "seervi_headboy_votes";
+const HEAD_GIRL_KEY = "seervi_headgirl_votes";
 
-      try {
-        const votes = JSON.parse(saved);
+const headBoyCandidates = [
+  "Head Boy Candidate 1",
+  "Head Boy Candidate 2",
+  "Head Boy Candidate 3",
+  "Head Boy Candidate 4"
+];
 
-        return {
-          "Avinash Gehlot": Number(votes["Avinash Gehlot"]) || 0,
-          "Surendra Goyal": Number(votes["Surendra Goyal"]) || 0,
-          "Yogi Laxman Nath": Number(votes["Yogi Laxman Nath"]) || 0,
-          "Dilip Choudhary": Number(votes["Dilip Choudhary"]) || 0
-        };
-      } catch (error) {
-        return emptyVotes();
-      }
-    }
+const headGirlCandidates = [
+  "Head Girl Candidate 1",
+  "Head Girl Candidate 2",
+  "Head Girl Candidate 3",
+  "Head Girl Candidate 4"
+];
 
-    function refreshDashboard() {
-      const votes = getVotes();
+function getVotes(key, candidates) {
+  const saved = localStorage.getItem(key);
 
-      const avinash = votes["Avinash Gehlot"];
-      const surendra = votes["Surendra Goyal"];
-      const yogi = votes["Yogi Laxman Nath"];
-      const dilip = votes["Dilip Choudhary"];
-      const total = avinash + surendra + yogi + dilip;
-
-      document.getElementById("totalVotes").textContent = total;
-      document.getElementById("avinashVotes").textContent = avinash;
-      document.getElementById("surendraVotes").textContent = surendra;
-      document.getElementById("yogiVotes").textContent = yogi;
-      document.getElementById("dilipVotes").textContent = dilip;
-
-      document.getElementById("avinashBar").style.width = total ? (avinash / total * 100) + "%" : "0%";
-      document.getElementById("surendraBar").style.width = total ? (surendra / total * 100) + "%" : "0%";
-      document.getElementById("yogiBar").style.width = total ? (yogi / total * 100) + "%" : "0%";
-      document.getElementById("dilipBar").style.width = total ? (dilip / total * 100) + "%" : "0%";
-    }
-
-    function resetVotes() {
-      if (confirm("Reset all election votes to zero?")) {
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(emptyVotes()));
-        refreshDashboard();
-      }
-    }
-
-    document.addEventListener("DOMContentLoaded", function() {
-      refreshDashboard();
-      setInterval(refreshDashboard, 1000);
+  if (!saved) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
     });
-  </script>
+    return emptyVotes;
+  }
+
+  try {
+    const votes = JSON.parse(saved);
+    const cleanVotes = {};
+
+    candidates.forEach(function(candidate) {
+      cleanVotes[candidate] = Number(votes[candidate]) || 0;
+    });
+
+    return cleanVotes;
+  } catch (error) {
+    const emptyVotes = {};
+    candidates.forEach(function(candidate) {
+      emptyVotes[candidate] = 0;
+    });
+    return emptyVotes;
+  }
+}
+
+function renderResults(key, candidates, resultElementId, totalElementId, winnerElementId) {
+  const votes = getVotes(key, candidates);
+  const resultElement = document.getElementById(resultElementId);
+  const totalElement = document.getElementById(totalElementId);
+  const winnerElement = document.getElementById(winnerElementId);
+
+  let totalVotes = 0;
+  let highestVotes = -1;
+  let leaders = [];
+
+  candidates.forEach(function(candidate) {
+    totalVotes += votes[candidate];
+
+    if (votes[candidate] > highestVotes) {
+      highestVotes = votes[candidate];
+      leaders = [candidate];
+    } else if (votes[candidate] === highestVotes) {
+      leaders.push(candidate);
+    }
+  });
+
+  totalElement.textContent = totalVotes;
+  resultElement.innerHTML = "";
+
+  candidates.forEach(function(candidate) {
+    const voteCount = votes[candidate];
+    const percentage = totalVotes === 0 ? 0 : Math.round((voteCount / totalVotes) * 100);
+
+    const row = document.createElement("div");
+    row.className = "result-row";
+
+    row.innerHTML =
+      "<div class='result-name'>" + candidate + "</div>" +
+      "<div class='result-bar-area'>" +
+      "<div class='result-bar' style='width:" + percentage + "%'></div>" +
+      "</div>" +
+      "<div class='result-votes'>" + voteCount + "</div>";
+
+    resultElement.appendChild(row);
+  });
+
+  if (totalVotes === 0) {
+    winnerElement.textContent = "No votes have been cast yet.";
+  } else if (leaders.length > 1) {
+    winnerElement.textContent = "Current Tie: " + leaders.join(", ");
+  } else {
+    winnerElement.textContent = "Current Leader: " + leaders[0] + " with " + highestVotes + " votes";
+  }
+
+  return totalVotes;
+}
+
+function updateDashboard() {
+  const headBoyTotal = renderResults(
+    HEAD_BOY_KEY,
+    headBoyCandidates,
+    "headBoyResults",
+    "headBoyTotal",
+    "headBoyWinner"
+  );
+
+  const headGirlTotal = renderResults(
+    HEAD_GIRL_KEY,
+    headGirlCandidates,
+    "headGirlResults",
+    "headGirlTotal",
+    "headGirlWinner"
+  );
+
+  document.getElementById("completedVoters").textContent =
+    Math.min(headBoyTotal, headGirlTotal);
+}
+
+function resetElection() {
+  const confirmed = confirm("Are you sure you want to reset all Head Boy and Head Girl votes?");
+
+  if (!confirmed) {
+    return;
+  }
+
+  localStorage.removeItem(HEAD_BOY_KEY);
+  localStorage.removeItem(HEAD_GIRL_KEY);
+  localStorage.removeItem("seervi_election_lock_until");
+  localStorage.removeItem("seervi_election_completed");
+
+  updateDashboard();
+}
+
+updateDashboard();
+setInterval(updateDashboard, 1000);
+</script>
 
 </body>
-</html>       
+</html>
