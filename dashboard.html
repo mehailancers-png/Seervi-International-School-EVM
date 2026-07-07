@@ -11,7 +11,7 @@
 
   <header class="site-header">
     <div class="brand-area">
-      <img src="logo.png" alt="Seervi International School Logo" class="school-logo">
+      <img src="logo.png" alt="School Logo" class="school-logo">
       <div>
         <h1>SEERVI INTERNATIONAL SCHOOL</h1>
         <p>School Council Election 2026</p>
@@ -20,46 +20,40 @@
     <a href="index.html" class="dashboard-link">Back to Voting</a>
   </header>
 
-  <!-- PIN LOCK SCREEN -->
   <section id="pinScreen" class="pin-screen">
     <div class="pin-card">
+      <div class="security-badge">SECURE ACCESS</div>
 
-      <div id="lockIcon" class="lock-icon">
-        <div class="shield-shape">
-          <div class="keyhole"></div>
-        </div>
+      <div class="shield-icon">
+        <div class="shield-check">✓</div>
       </div>
 
-      <h2 id="pinTitle">Dashboard Locked</h2>
-      <p id="pinText">
-        Enter the authorized 4-digit counting PIN to view election results.
-      </p>
+      <h2 id="pinTitle">Results Dashboard Locked</h2>
+      <p id="pinText">Enter the authorized 4-digit PIN to access election counting results.</p>
 
       <input
         type="password"
         id="pinInput"
         maxlength="4"
         inputmode="numeric"
-        placeholder="Enter 4-digit PIN"
         autocomplete="off"
+        placeholder="• • • •"
       >
 
-      <button id="pinButton" class="vote-btn" onclick="checkPin()">
+      <button id="pinButton" class="unlock-btn" type="button">
         Unlock Dashboard
       </button>
 
       <p id="attemptText" class="attempt-text">Attempts remaining: 5</p>
       <p id="pinMessage" class="pin-message"></p>
-
     </div>
   </section>
 
-  <!-- ACTUAL DASHBOARD -->
-  <main id="dashboardContent" class="main-container" style="display: none;">
+  <main id="dashboardContent" class="main-container hidden">
 
     <section class="dashboard-box">
-
       <div class="evm-title">
+        <span class="small-label">AUTHORIZED COUNTING PANEL</span>
         <h2>Election Results Dashboard</h2>
         <p>Live vote count for Head Boy and Head Girl elections.</p>
       </div>
@@ -67,42 +61,34 @@
       <div class="dashboard-grid">
 
         <section class="result-panel">
-          <h2>Head Boy Election Results</h2>
-          <p class="total-votes">
-            Total Votes Cast: <span id="headBoyTotal">0</span>
-          </p>
-          <div id="headBoyResults"></div>
-          <div class="winner-box" id="headBoyWinner">
-            Winner will appear here.
+          <div class="panel-heading">
+            <h2>Head Boy Results</h2>
+            <span class="vote-pill">Votes: <strong id="headBoyTotal">0</strong></span>
           </div>
+          <div id="headBoyResults" class="results-list"></div>
+          <div id="headBoyWinner" class="winner-box">No votes have been cast yet.</div>
         </section>
 
         <section class="result-panel">
-          <h2>Head Girl Election Results</h2>
-          <p class="total-votes">
-            Total Votes Cast: <span id="headGirlTotal">0</span>
-          </p>
-          <div id="headGirlResults"></div>
-          <div class="winner-box" id="headGirlWinner">
-            Winner will appear here.
+          <div class="panel-heading">
+            <h2>Head Girl Results</h2>
+            <span class="vote-pill">Votes: <strong id="headGirlTotal">0</strong></span>
           </div>
+          <div id="headGirlResults" class="results-list"></div>
+          <div id="headGirlWinner" class="winner-box">No votes have been cast yet.</div>
         </section>
 
       </div>
 
-      <div class="overall-summary">
+      <section class="overall-summary">
         <h2>Overall Election Summary</h2>
-        <p>
-          Completed Voters:
-          <strong id="completedVoters">0</strong>
-        </p>
-        <p>Dashboard updates automatically every second.</p>
-      </div>
+        <div class="summary-number" id="completedVoters">0</div>
+        <p>Completed voters who have cast both votes.</p>
+      </section>
 
-      <button class="reset-btn" onclick="resetElection()">
+      <button id="resetButton" class="reset-btn" type="button">
         Reset Election Data
       </button>
-
     </section>
 
   </main>
@@ -114,11 +100,10 @@
   <script>
     const DASHBOARD_PIN = "2026";
     const MAX_ATTEMPTS = 5;
-    const LOCK_TIME_MINUTES = 5;
+    const LOCK_TIME = 5 * 60 * 1000;
 
     const HEAD_BOY_KEY = "seervi_headboy_votes";
     const HEAD_GIRL_KEY = "seervi_headgirl_votes";
-
     const PIN_ATTEMPTS_KEY = "seervi_dashboard_pin_attempts";
     const PIN_LOCK_KEY = "seervi_dashboard_pin_lock_until";
 
@@ -136,286 +121,193 @@
 
     let dashboardOpened = false;
 
-    function setNormalIcon() {
-      const icon = document.getElementById("lockIcon");
-
-      if (icon) {
-        icon.innerHTML =
-          "<div class='shield-shape'><div class='keyhole'></div></div>";
-      }
-    }
-
-    function showStatus(type, title, text) {
-      const card = document.querySelector(".pin-card");
-      const icon = document.getElementById("lockIcon");
-      const pinTitle = document.getElementById("pinTitle");
-      const pinText = document.getElementById("pinText");
-      const message = document.getElementById("pinMessage");
-
-      card.classList.remove(
-        "access-granted",
-        "access-denied",
-        "access-locked"
-      );
-
-      if (type === "access-granted") {
-        card.classList.add("access-granted");
-        icon.innerHTML = "<div class='status-tick'>✓</div>";
-        pinTitle.textContent = title;
-        pinText.textContent = text;
-        message.textContent = "";
-        return;
-      }
-
-      if (type === "access-denied") {
-        card.classList.add("access-denied");
-        icon.innerHTML = "<div class='status-cross'>!</div>";
-        pinTitle.textContent = title;
-        pinText.textContent = text;
-        message.textContent = "Please enter the correct 4-digit PIN.";
-        return;
-      }
-
-      if (type === "access-locked") {
-        card.classList.add("access-locked");
-        icon.innerHTML = "<div class='status-lock'>×</div>";
-        pinTitle.textContent = title;
-        pinText.textContent = text;
-        message.textContent = "Security lock is active.";
-        return;
-      }
-
-      setNormalIcon();
-      pinTitle.textContent = "Dashboard Locked";
-      pinText.textContent =
-        "Enter the authorized 4-digit counting PIN to view election results.";
-      message.textContent = "";
-    }
+    const pinScreen = document.getElementById("pinScreen");
+    const dashboardContent = document.getElementById("dashboardContent");
+    const pinInput = document.getElementById("pinInput");
+    const pinButton = document.getElementById("pinButton");
+    const pinTitle = document.getElementById("pinTitle");
+    const pinText = document.getElementById("pinText");
+    const pinMessage = document.getElementById("pinMessage");
+    const attemptText = document.getElementById("attemptText");
+    const resetButton = document.getElementById("resetButton");
 
     function getAttempts() {
       return Number(localStorage.getItem(PIN_ATTEMPTS_KEY)) || 0;
-    }
-
-    function setAttempts(value) {
-      localStorage.setItem(PIN_ATTEMPTS_KEY, value);
     }
 
     function getLockUntil() {
       return Number(localStorage.getItem(PIN_LOCK_KEY)) || 0;
     }
 
-    function updateAttemptText() {
-      const attempts = getAttempts();
-      const remaining = Math.max(0, MAX_ATTEMPTS - attempts);
-
-      document.getElementById("attemptText").textContent =
-        "Attempts remaining: " + remaining;
+    function setMessage(type, title, text, note) {
+      pinTitle.textContent = title;
+      pinText.textContent = text;
+      pinMessage.textContent = note || "";
+      pinMessage.className = "pin-message " + type;
     }
 
-    function checkLockStatus() {
+    function updateAttempts() {
+      const remaining = Math.max(0, MAX_ATTEMPTS - getAttempts());
+      attemptText.textContent = "Attempts remaining: " + remaining;
+    }
+
+    function lockDashboard() {
       const lockUntil = getLockUntil();
       const now = Date.now();
 
-      const pinInput = document.getElementById("pinInput");
-      const pinButton = document.getElementById("pinButton");
-      const attemptText = document.getElementById("attemptText");
-
-      if (lockUntil > now) {
-        const secondsLeft = Math.ceil((lockUntil - now) / 1000);
-        const minutes = Math.floor(secondsLeft / 60);
-        const seconds = secondsLeft % 60;
-
-        pinInput.disabled = true;
-        pinButton.disabled = true;
-
-        attemptText.textContent =
-          "Dashboard locked for " + minutes + "m " + seconds + "s";
-
-        showStatus(
-          "access-locked",
-          "Security Alert",
-          "Unauthorized access attempts detected. Dashboard has been temporarily locked."
-        );
-
-        return true;
-      }
-
-      if (lockUntil !== 0) {
+      if (lockUntil <= now) {
         localStorage.removeItem(PIN_LOCK_KEY);
         localStorage.removeItem(PIN_ATTEMPTS_KEY);
-
         pinInput.disabled = false;
         pinButton.disabled = false;
-
-        showStatus("normal");
+        updateAttempts();
+        return false;
       }
 
-      return false;
+      const remainingMs = lockUntil - now;
+      const totalSeconds = Math.ceil(remainingMs / 1000);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      pinInput.disabled = true;
+      pinButton.disabled = true;
+
+      setMessage(
+        "denied",
+        "Dashboard Temporarily Locked",
+        "Too many incorrect PIN attempts were entered.",
+        "Try again after " + minutes + "m " + seconds + "s"
+      );
+
+      attemptText.textContent = "Security lock active";
+      return true;
+    }
+
+    function openDashboard() {
+      setMessage(
+        "granted",
+        "Access Granted",
+        "Authorized result access verified successfully.",
+        "Opening dashboard..."
+      );
+
+      pinInput.disabled = true;
+      pinButton.disabled = true;
+
+      setTimeout(function () {
+        pinScreen.classList.add("hidden");
+        dashboardContent.classList.remove("hidden");
+        dashboardOpened = true;
+        updateDashboard();
+      }, 700);
     }
 
     function checkPin() {
-      if (checkLockStatus()) return;
+      if (lockDashboard()) return;
 
-      const pinInput = document.getElementById("pinInput");
       const enteredPin = pinInput.value.trim();
 
-      if (enteredPin.length !== 4) {
-        showStatus(
-          "access-denied",
-          "Access Denied",
-          "Please enter a valid 4-digit PIN."
-        );
-
+      if (enteredPin !== DASHBOARD_PIN) {
+        const attempts = getAttempts() + 1;
+        localStorage.setItem(PIN_ATTEMPTS_KEY, attempts);
         pinInput.value = "";
-        return;
-      }
 
-      if (enteredPin === DASHBOARD_PIN) {
-        localStorage.removeItem(PIN_ATTEMPTS_KEY);
+        if (attempts >= MAX_ATTEMPTS) {
+          localStorage.setItem(PIN_LOCK_KEY, Date.now() + LOCK_TIME);
+          lockDashboard();
+          return;
+        }
 
-        showStatus(
-          "access-granted",
-          "Access Granted",
-          "Authorized result access verified successfully."
+        setMessage(
+          "denied",
+          "Access Denied",
+          "The PIN entered is incorrect.",
+          "Unauthorized attempt recorded."
         );
 
-        pinInput.disabled = true;
-        document.getElementById("pinButton").disabled = true;
-
-        document.getElementById("attemptText").textContent =
-          "Opening secure dashboard...";
-
-        setTimeout(function () {
-          document.getElementById("pinScreen").style.display = "none";
-          document.getElementById("dashboardContent").style.display = "block";
-
-          dashboardOpened = true;
-          updateDashboard();
-        }, 900);
-
+        updateAttempts();
+        pinInput.focus();
         return;
       }
 
-      const attempts = getAttempts() + 1;
-      setAttempts(attempts);
-
-      pinInput.value = "";
-
-      if (attempts >= MAX_ATTEMPTS) {
-        const lockUntil =
-          Date.now() + (LOCK_TIME_MINUTES * 60 * 1000);
-
-        localStorage.setItem(PIN_LOCK_KEY, lockUntil);
-        checkLockStatus();
-        return;
-      }
-
-      showStatus(
-        "access-denied",
-        "Access Denied",
-        "Incorrect PIN. Unauthorized access attempt recorded."
-      );
-
-      updateAttemptText();
-      pinInput.focus();
+      localStorage.removeItem(PIN_ATTEMPTS_KEY);
+      openDashboard();
     }
 
-    function getVotes(storageKey, candidates) {
-      const savedVotes = localStorage.getItem(storageKey);
+    function getVotes(key, candidates) {
+      const blankVotes = {};
 
-      const emptyVotes = {};
-
-      candidates.forEach(function(candidate) {
-        emptyVotes[candidate] = 0;
+      candidates.forEach(function (candidate) {
+        blankVotes[candidate] = 0;
       });
 
-      if (!savedVotes) {
-        return emptyVotes;
-      }
-
       try {
-        const parsedVotes = JSON.parse(savedVotes);
+        const saved = localStorage.getItem(key);
 
-        candidates.forEach(function(candidate) {
-          emptyVotes[candidate] =
-            Number(parsedVotes[candidate]) || 0;
+        if (!saved) return blankVotes;
+
+        const parsed = JSON.parse(saved);
+
+        candidates.forEach(function (candidate) {
+          blankVotes[candidate] = Number(parsed[candidate]) || 0;
         });
 
-        return emptyVotes;
+        return blankVotes;
       } catch (error) {
-        return emptyVotes;
+        return blankVotes;
       }
     }
 
-    function renderResults(
-      storageKey,
-      candidates,
-      resultElementId,
-      totalElementId,
-      winnerElementId
-    ) {
-      const votes = getVotes(storageKey, candidates);
-
-      const resultElement =
-        document.getElementById(resultElementId);
-
-      const totalElement =
-        document.getElementById(totalElementId);
-
-      const winnerElement =
-        document.getElementById(winnerElementId);
+    function renderResults(key, candidates, resultId, totalId, winnerId) {
+      const votes = getVotes(key, candidates);
+      const resultBox = document.getElementById(resultId);
+      const totalBox = document.getElementById(totalId);
+      const winnerBox = document.getElementById(winnerId);
 
       let totalVotes = 0;
-      let highestVotes = -1;
+      let highestVotes = 0;
       let leaders = [];
 
-      candidates.forEach(function(candidate) {
+      candidates.forEach(function (candidate) {
         totalVotes += votes[candidate];
 
         if (votes[candidate] > highestVotes) {
           highestVotes = votes[candidate];
           leaders = [candidate];
-        } else if (votes[candidate] === highestVotes) {
+        } else if (votes[candidate] === highestVotes && highestVotes > 0) {
           leaders.push(candidate);
         }
       });
 
-      totalElement.textContent = totalVotes;
-      resultElement.innerHTML = "";
+      totalBox.textContent = totalVotes;
+      resultBox.innerHTML = "";
 
-      candidates.forEach(function(candidate) {
-        const voteCount = votes[candidate];
-
-        const percentage =
-          totalVotes === 0
-            ? 0
-            : Math.round((voteCount / totalVotes) * 100);
+      candidates.forEach(function (candidate) {
+        const count = votes[candidate];
+        const percent = totalVotes === 0 ? 0 : Math.round((count / totalVotes) * 100);
 
         const row = document.createElement("div");
         row.className = "result-row";
 
         row.innerHTML =
-          "<div class='result-name'>" + candidate + "</div>" +
-          "<div class='result-bar-area'>" +
-          "<div class='result-bar' style='width:" + percentage + "%'></div>" +
+          "<div class='result-topline'>" +
+            "<span class='result-name'>" + candidate + "</span>" +
+            "<strong class='result-votes'>" + count + "</strong>" +
           "</div>" +
-          "<div class='result-votes'>" + voteCount + "</div>";
+          "<div class='result-bar-area'>" +
+            "<div class='result-bar' style='width:" + percent + "%'></div>" +
+          "</div>" +
+          "<div class='result-percent'>" + percent + "% votes</div>";
 
-        resultElement.appendChild(row);
+        resultBox.appendChild(row);
       });
 
       if (totalVotes === 0) {
-        winnerElement.textContent = "No votes have been cast yet.";
+        winnerBox.textContent = "No votes have been cast yet.";
       } else if (leaders.length > 1) {
-        winnerElement.textContent =
-          "Current Tie: " + leaders.join(", ");
+        winnerBox.textContent = "Current tie: " + leaders.join(", ");
       } else {
-        winnerElement.textContent =
-          "Current Leader: " +
-          leaders[0] +
-          " with " +
-          highestVotes +
-          " votes";
+        winnerBox.textContent = "Current leader: " + leaders[0] + " with " + highestVotes + " votes.";
       }
 
       return totalVotes;
@@ -424,7 +316,7 @@
     function updateDashboard() {
       if (!dashboardOpened) return;
 
-      const headBoyTotal = renderResults(
+      const boyVotes = renderResults(
         HEAD_BOY_KEY,
         headBoyCandidates,
         "headBoyResults",
@@ -432,7 +324,7 @@
         "headBoyWinner"
       );
 
-      const headGirlTotal = renderResults(
+      const girlVotes = renderResults(
         HEAD_GIRL_KEY,
         headGirlCandidates,
         "headGirlResults",
@@ -440,16 +332,13 @@
         "headGirlWinner"
       );
 
-      document.getElementById("completedVoters").textContent =
-        Math.min(headBoyTotal, headGirlTotal);
+      document.getElementById("completedVoters").textContent = Math.min(boyVotes, girlVotes);
     }
 
     function resetElection() {
-      const confirmation = confirm(
-        "Are you sure you want to permanently reset all election votes?"
-      );
+      const sure = confirm("Reset all Head Boy and Head Girl votes permanently?");
 
-      if (!confirmation) return;
+      if (!sure) return;
 
       localStorage.removeItem(HEAD_BOY_KEY);
       localStorage.removeItem(HEAD_GIRL_KEY);
@@ -457,34 +346,32 @@
       localStorage.removeItem("seervi_election_completed");
 
       updateDashboard();
-      alert("Election data has been reset successfully.");
+      alert("Election data reset successfully.");
     }
 
-    document.addEventListener("DOMContentLoaded", function() {
-      const pinInput = document.getElementById("pinInput");
+    pinButton.addEventListener("click", checkPin);
 
-      setNormalIcon();
-      checkLockStatus();
-      updateAttemptText();
-
-      pinInput.addEventListener("input", function() {
-        this.value = this.value.replace(/[^0-9]/g, "");
-      });
-
-      pinInput.addEventListener("keydown", function(event) {
-        if (event.key === "Enter") {
-          checkPin();
-        }
-      });
-
-      setInterval(function() {
-        checkLockStatus();
-      }, 1000);
-
-      setInterval(function() {
-        updateDashboard();
-      }, 1000);
+    pinInput.addEventListener("input", function () {
+      this.value = this.value.replace(/[^0-9]/g, "");
     });
+
+    pinInput.addEventListener("keydown", function (event) {
+      if (event.key === "Enter") {
+        checkPin();
+      }
+    });
+
+    resetButton.addEventListener("click", resetElection);
+
+    updateAttempts();
+    lockDashboard();
+
+    setInterval(function () {
+      if (!dashboardOpened) {
+        lockDashboard();
+      }
+      updateDashboard();
+    }, 1000);
   </script>
 
 </body>
