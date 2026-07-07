@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Head Boy Election | Seervi International School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div>
+      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+      <p>Student Council Election EVM</p>
+    </div>
+
+    <a class="dashlink" href="dashboard.html">Counting Dashboard</a>
+  </header>
+
+  <main class="wrap">
+    <section class="box">
+
+      <div class="title">
+        <h2>Head Boy Election</h2>
+        <p>Please select one candidate only.</p>
+      </div>
+
+      <div class="note">
+        Your choice remains private. Results are available only in the PIN-protected dashboard.
+      </div>
+
+      <div class="grid">
+
+        <!-- HEAD BOY 1 -->
+        <div class="candidate">
+          <div class="symbol">
+            <img src="boy1.png" alt="Yaduraaj Singh Charan Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 1';">
+          </div>
+
+          <h3>Yaduraaj Singh Charan</h3>
+          <p>Candidate for Head Boy</p>
+
+          <button class="vote" onclick="castVote(0)">
+            CAST VOTE
+          </button>
+        </div>
+
+        <!-- HEAD BOY 2 -->
+        <div class="candidate">
+          <div class="symbol">
+            <img src="boy2.png" alt="Rana Aaditya Singh Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 2';">
+          </div>
+
+          <h3>Rana Aaditya Singh</h3>
+          <p>Candidate for Head Boy</p>
+
+          <button class="vote" onclick="castVote(1)">
+            CAST VOTE
+          </button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- VOTE SUCCESS POPUP -->
+  <div class="overlay" id="successPopup">
+    <div class="modal">
+      <div class="shield">✓</div>
+      <h2>Vote Cast Successfully</h2>
+      <p>Your Head Boy vote has been recorded privately.</p>
+      <p>Redirecting to Head Girl Election...</p>
+    </div>
+  </div>
+
+  <footer>
+    Seervi International School • EVM Working Model
+  </footer>
+
+  <script>
+    const HEAD_BOY_STORAGE_KEY = "seervi_headboy_votes";
+    const HEAD_BOY_SESSION_KEY = "seervi_headboy_voted";
+
+    /* Agar isi browser session mein Head Boy vote already diya hai */
+    if (sessionStorage.getItem(HEAD_BOY_SESSION_KEY) === "yes") {
+      document.querySelectorAll(".vote").forEach(button => {
+        button.disabled = true;
+        button.textContent = "VOTE ALREADY CAST";
+      });
+    }
+
+    function castVote(candidateIndex) {
+      /* Double vote stop */
+      if (sessionStorage.getItem(HEAD_BOY_SESSION_KEY) === "yes") {
+        return;
+      }
+
+      /* Current votes nikaal */
+      let votes = JSON.parse(localStorage.getItem(HEAD_BOY_STORAGE_KEY)) || [0, 0];
+
+      /* Candidate ka vote add */
+      votes[candidateIndex] = votes[candidateIndex] + 1;
+
+      /* Save votes */
+      localStorage.setItem(HEAD_BOY_STORAGE_KEY, JSON.stringify(votes));
+
+      /* Same voter ke liye dobara vote block */
+      sessionStorage.setItem(HEAD_BOY_SESSION_KEY, "yes");
+
+      /* Buttons disable */
+      document.querySelectorAll(".vote").forEach(button => {
+        button.disabled = true;
+        button.textContent = "VOTE CAST";
+      });
+
+      /* Success popup */
+      document.getElementById("successPopup").classList.add("show");
+
+      /* Head Girl page par redirect */
+      setTimeout(() => {
+        window.location.href = "headgirl.html";
+      }, 1500);
+    }
+  </script>
+
+</body>
+</html>
