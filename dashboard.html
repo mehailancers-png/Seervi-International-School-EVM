@@ -6,99 +6,486 @@
   <title>Election Dashboard | Seervi International School</title>
   <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
 
-<header class="top-header">
-  <div class="school-brand">
-    <div class="logo">
-      <img src="logo.png" alt="Seervi International School Logo">
+  <header class="site-header">
+    <div class="brand-area">
+      <img src="logo.png" alt="Seervi International School Logo" class="school-logo">
+      <div>
+        <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+        <p>School Council Election 2026</p>
+      </div>
     </div>
-    <div>
-      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
-      <p>School Council Election - Results Dashboard</p>
+    <a href="index.html" class="dashboard-link">Back to Voting</a>
+  </header>
+
+  <!-- PIN LOCK SCREEN -->
+  <section id="pinScreen" class="pin-screen">
+    <div class="pin-card">
+
+      <div id="lockIcon" class="lock-icon">
+        <div class="shield-shape">
+          <div class="keyhole"></div>
+        </div>
+      </div>
+
+      <h2 id="pinTitle">Dashboard Locked</h2>
+      <p id="pinText">
+        Enter the authorized 4-digit counting PIN to view election results.
+      </p>
+
+      <input
+        type="password"
+        id="pinInput"
+        maxlength="4"
+        inputmode="numeric"
+        placeholder="Enter 4-digit PIN"
+        autocomplete="off"
+      >
+
+      <button id="pinButton" class="vote-btn" onclick="checkPin()">
+        Unlock Dashboard
+      </button>
+
+      <p id="attemptText" class="attempt-text">Attempts remaining: 5</p>
+      <p id="pinMessage" class="pin-message"></p>
+
     </div>
-  </div>
-
-  <a href="index.html" class="dashboard-btn">Back to Voting</a>
-</header>
-
-<div id="pinScreen" class="pin-screen">
-  <div class="pin-card">
-    <div id="lockIcon" class="lock-icon">
-  <div class="shield-shape">
-    <div class="keyhole"></div>
-  </div>
-    </div>
-    <div class="security-label">SECURE RESULT ACCESS</div>
-
-    <h2 id="pinTitle">Dashboard Locked</h2>
-    <p id="pinText">Enter the authorized 4-digit counting PIN to view election results.</p>
-
-    <input
-      type="password"
-      id="pinInput"
-      class="pin-input"
-      maxlength="4"
-      inputmode="numeric"
-      placeholder="••••"
-      autocomplete="off"
-    >
-
-    <button id="pinButton" class="pin-btn" onclick="checkPin()">Verify PIN</button>
-
-    <p id="attemptText" class="attempt-text">Attempts remaining: 5</p>
-    <p id="pinMessage" class="pin-message"></p>
-  </div>
-</div>
-
-<main id="dashboardContent" class="main-container" style="display: none;">
-  <section class="dashboard-box">
-
-    <div class="evm-title">
-      <h2>Election Results Dashboard</h2>
-      <p>Live vote count for Head Boy and Head Girl elections.</p>
-    </div>
-
-    <div class="dashboard-grid">
-      <section class="result-panel">
-        <h2>Head Boy Election Results</h2>
-        <p class="total-votes">Total Votes Cast: <span id="headBoyTotal">0</span></p>
-        <div id="headBoyResults"></div>
-        <div class="winner-box" id="headBoyWinner">Winner will appear here.</div>
-      </section>
-
-      <section class="result-panel">
-        <h2>Head Girl Election Results</h2>
-        <p class="total-votes">Total Votes Cast: <span id="headGirlTotal">0</span></p>
-        <div id="headGirlResults"></div>
-        <div class="winner-box" id="headGirlWinner">Winner will appear here.</div>
-      </section>
-    </div>
-
-    <div class="overall-summary">
-      <h2>Overall Election Summary</h2>
-      <p>Completed Voters: <strong id="completedVoters">0</strong></p>
-      <p>Dashboard updates automatically every second.</p>
-    </div>
-
-    <button class="reset-btn" onclick="resetElection()">Reset Election Data</button>
   </section>
-</main>
 
-<footer>
-  <p>School Council Election Working Model | Seervi International School</p>
-</footer>
+  <!-- ACTUAL DASHBOARD -->
+  <main id="dashboardContent" class="main-container" style="display: none;">
 
-<script>
-const DASHBOARD_PIN = "2026";
-const MAX_ATTEMPTS = 5;
-const LOCK_TIME_MINUTES = 5;
+    <section class="dashboard-box">
 
-const HEAD_BOY_KEY = "seervi_headboy_votes";
-const HEAD_GIRL_KEY = "seervi_headgirl_votes";
-const PIN_ATTEMPTS_KEY = "seervi_dashboard_pin_attempts";
-const PIN_LOCK_KEY = "seervi_dashboard_pin_lock_until";
+      <div class="evm-title">
+        <h2>Election Results Dashboard</h2>
+        <p>Live vote count for Head Boy and Head Girl elections.</p>
+      </div>
 
-const headBoyCandidates = [
-  "Yaduraaj Singh Charan",
- 
+      <div class="dashboard-grid">
+
+        <section class="result-panel">
+          <h2>Head Boy Election Results</h2>
+          <p class="total-votes">
+            Total Votes Cast: <span id="headBoyTotal">0</span>
+          </p>
+          <div id="headBoyResults"></div>
+          <div class="winner-box" id="headBoyWinner">
+            Winner will appear here.
+          </div>
+        </section>
+
+        <section class="result-panel">
+          <h2>Head Girl Election Results</h2>
+          <p class="total-votes">
+            Total Votes Cast: <span id="headGirlTotal">0</span>
+          </p>
+          <div id="headGirlResults"></div>
+          <div class="winner-box" id="headGirlWinner">
+            Winner will appear here.
+          </div>
+        </section>
+
+      </div>
+
+      <div class="overall-summary">
+        <h2>Overall Election Summary</h2>
+        <p>
+          Completed Voters:
+          <strong id="completedVoters">0</strong>
+        </p>
+        <p>Dashboard updates automatically every second.</p>
+      </div>
+
+      <button class="reset-btn" onclick="resetElection()">
+        Reset Election Data
+      </button>
+
+    </section>
+
+  </main>
+
+  <footer>
+    <p>School Council Election Working Model | Seervi International School</p>
+  </footer>
+
+  <script>
+    const DASHBOARD_PIN = "2026";
+    const MAX_ATTEMPTS = 5;
+    const LOCK_TIME_MINUTES = 5;
+
+    const HEAD_BOY_KEY = "seervi_headboy_votes";
+    const HEAD_GIRL_KEY = "seervi_headgirl_votes";
+
+    const PIN_ATTEMPTS_KEY = "seervi_dashboard_pin_attempts";
+    const PIN_LOCK_KEY = "seervi_dashboard_pin_lock_until";
+
+    const headBoyCandidates = [
+      "Yaduraaj Singh Charan",
+      "Rana Aaditya Singh"
+    ];
+
+    const headGirlCandidates = [
+      "Khushi",
+      "Disha",
+      "Meherdeep Kaur",
+      "Paridhi"
+    ];
+
+    let dashboardOpened = false;
+
+    function setNormalIcon() {
+      const icon = document.getElementById("lockIcon");
+
+      if (icon) {
+        icon.innerHTML =
+          "<div class='shield-shape'><div class='keyhole'></div></div>";
+      }
+    }
+
+    function showStatus(type, title, text) {
+      const card = document.querySelector(".pin-card");
+      const icon = document.getElementById("lockIcon");
+      const pinTitle = document.getElementById("pinTitle");
+      const pinText = document.getElementById("pinText");
+      const message = document.getElementById("pinMessage");
+
+      card.classList.remove(
+        "access-granted",
+        "access-denied",
+        "access-locked"
+      );
+
+      if (type === "access-granted") {
+        card.classList.add("access-granted");
+        icon.innerHTML = "<div class='status-tick'>✓</div>";
+        pinTitle.textContent = title;
+        pinText.textContent = text;
+        message.textContent = "";
+        return;
+      }
+
+      if (type === "access-denied") {
+        card.classList.add("access-denied");
+        icon.innerHTML = "<div class='status-cross'>!</div>";
+        pinTitle.textContent = title;
+        pinText.textContent = text;
+        message.textContent = "Please enter the correct 4-digit PIN.";
+        return;
+      }
+
+      if (type === "access-locked") {
+        card.classList.add("access-locked");
+        icon.innerHTML = "<div class='status-lock'>×</div>";
+        pinTitle.textContent = title;
+        pinText.textContent = text;
+        message.textContent = "Security lock is active.";
+        return;
+      }
+
+      setNormalIcon();
+      pinTitle.textContent = "Dashboard Locked";
+      pinText.textContent =
+        "Enter the authorized 4-digit counting PIN to view election results.";
+      message.textContent = "";
+    }
+
+    function getAttempts() {
+      return Number(localStorage.getItem(PIN_ATTEMPTS_KEY)) || 0;
+    }
+
+    function setAttempts(value) {
+      localStorage.setItem(PIN_ATTEMPTS_KEY, value);
+    }
+
+    function getLockUntil() {
+      return Number(localStorage.getItem(PIN_LOCK_KEY)) || 0;
+    }
+
+    function updateAttemptText() {
+      const attempts = getAttempts();
+      const remaining = Math.max(0, MAX_ATTEMPTS - attempts);
+
+      document.getElementById("attemptText").textContent =
+        "Attempts remaining: " + remaining;
+    }
+
+    function checkLockStatus() {
+      const lockUntil = getLockUntil();
+      const now = Date.now();
+
+      const pinInput = document.getElementById("pinInput");
+      const pinButton = document.getElementById("pinButton");
+      const attemptText = document.getElementById("attemptText");
+
+      if (lockUntil > now) {
+        const secondsLeft = Math.ceil((lockUntil - now) / 1000);
+        const minutes = Math.floor(secondsLeft / 60);
+        const seconds = secondsLeft % 60;
+
+        pinInput.disabled = true;
+        pinButton.disabled = true;
+
+        attemptText.textContent =
+          "Dashboard locked for " + minutes + "m " + seconds + "s";
+
+        showStatus(
+          "access-locked",
+          "Security Alert",
+          "Unauthorized access attempts detected. Dashboard has been temporarily locked."
+        );
+
+        return true;
+      }
+
+      if (lockUntil !== 0) {
+        localStorage.removeItem(PIN_LOCK_KEY);
+        localStorage.removeItem(PIN_ATTEMPTS_KEY);
+
+        pinInput.disabled = false;
+        pinButton.disabled = false;
+
+        showStatus("normal");
+      }
+
+      return false;
+    }
+
+    function checkPin() {
+      if (checkLockStatus()) return;
+
+      const pinInput = document.getElementById("pinInput");
+      const enteredPin = pinInput.value.trim();
+
+      if (enteredPin.length !== 4) {
+        showStatus(
+          "access-denied",
+          "Access Denied",
+          "Please enter a valid 4-digit PIN."
+        );
+
+        pinInput.value = "";
+        return;
+      }
+
+      if (enteredPin === DASHBOARD_PIN) {
+        localStorage.removeItem(PIN_ATTEMPTS_KEY);
+
+        showStatus(
+          "access-granted",
+          "Access Granted",
+          "Authorized result access verified successfully."
+        );
+
+        pinInput.disabled = true;
+        document.getElementById("pinButton").disabled = true;
+
+        document.getElementById("attemptText").textContent =
+          "Opening secure dashboard...";
+
+        setTimeout(function () {
+          document.getElementById("pinScreen").style.display = "none";
+          document.getElementById("dashboardContent").style.display = "block";
+
+          dashboardOpened = true;
+          updateDashboard();
+        }, 900);
+
+        return;
+      }
+
+      const attempts = getAttempts() + 1;
+      setAttempts(attempts);
+
+      pinInput.value = "";
+
+      if (attempts >= MAX_ATTEMPTS) {
+        const lockUntil =
+          Date.now() + (LOCK_TIME_MINUTES * 60 * 1000);
+
+        localStorage.setItem(PIN_LOCK_KEY, lockUntil);
+        checkLockStatus();
+        return;
+      }
+
+      showStatus(
+        "access-denied",
+        "Access Denied",
+        "Incorrect PIN. Unauthorized access attempt recorded."
+      );
+
+      updateAttemptText();
+      pinInput.focus();
+    }
+
+    function getVotes(storageKey, candidates) {
+      const savedVotes = localStorage.getItem(storageKey);
+
+      const emptyVotes = {};
+
+      candidates.forEach(function(candidate) {
+        emptyVotes[candidate] = 0;
+      });
+
+      if (!savedVotes) {
+        return emptyVotes;
+      }
+
+      try {
+        const parsedVotes = JSON.parse(savedVotes);
+
+        candidates.forEach(function(candidate) {
+          emptyVotes[candidate] =
+            Number(parsedVotes[candidate]) || 0;
+        });
+
+        return emptyVotes;
+      } catch (error) {
+        return emptyVotes;
+      }
+    }
+
+    function renderResults(
+      storageKey,
+      candidates,
+      resultElementId,
+      totalElementId,
+      winnerElementId
+    ) {
+      const votes = getVotes(storageKey, candidates);
+
+      const resultElement =
+        document.getElementById(resultElementId);
+
+      const totalElement =
+        document.getElementById(totalElementId);
+
+      const winnerElement =
+        document.getElementById(winnerElementId);
+
+      let totalVotes = 0;
+      let highestVotes = -1;
+      let leaders = [];
+
+      candidates.forEach(function(candidate) {
+        totalVotes += votes[candidate];
+
+        if (votes[candidate] > highestVotes) {
+          highestVotes = votes[candidate];
+          leaders = [candidate];
+        } else if (votes[candidate] === highestVotes) {
+          leaders.push(candidate);
+        }
+      });
+
+      totalElement.textContent = totalVotes;
+      resultElement.innerHTML = "";
+
+      candidates.forEach(function(candidate) {
+        const voteCount = votes[candidate];
+
+        const percentage =
+          totalVotes === 0
+            ? 0
+            : Math.round((voteCount / totalVotes) * 100);
+
+        const row = document.createElement("div");
+        row.className = "result-row";
+
+        row.innerHTML =
+          "<div class='result-name'>" + candidate + "</div>" +
+          "<div class='result-bar-area'>" +
+          "<div class='result-bar' style='width:" + percentage + "%'></div>" +
+          "</div>" +
+          "<div class='result-votes'>" + voteCount + "</div>";
+
+        resultElement.appendChild(row);
+      });
+
+      if (totalVotes === 0) {
+        winnerElement.textContent = "No votes have been cast yet.";
+      } else if (leaders.length > 1) {
+        winnerElement.textContent =
+          "Current Tie: " + leaders.join(", ");
+      } else {
+        winnerElement.textContent =
+          "Current Leader: " +
+          leaders[0] +
+          " with " +
+          highestVotes +
+          " votes";
+      }
+
+      return totalVotes;
+    }
+
+    function updateDashboard() {
+      if (!dashboardOpened) return;
+
+      const headBoyTotal = renderResults(
+        HEAD_BOY_KEY,
+        headBoyCandidates,
+        "headBoyResults",
+        "headBoyTotal",
+        "headBoyWinner"
+      );
+
+      const headGirlTotal = renderResults(
+        HEAD_GIRL_KEY,
+        headGirlCandidates,
+        "headGirlResults",
+        "headGirlTotal",
+        "headGirlWinner"
+      );
+
+      document.getElementById("completedVoters").textContent =
+        Math.min(headBoyTotal, headGirlTotal);
+    }
+
+    function resetElection() {
+      const confirmation = confirm(
+        "Are you sure you want to permanently reset all election votes?"
+      );
+
+      if (!confirmation) return;
+
+      localStorage.removeItem(HEAD_BOY_KEY);
+      localStorage.removeItem(HEAD_GIRL_KEY);
+      localStorage.removeItem("seervi_election_lock_until");
+      localStorage.removeItem("seervi_election_completed");
+
+      updateDashboard();
+      alert("Election data has been reset successfully.");
+    }
+
+    document.addEventListener("DOMContentLoaded", function() {
+      const pinInput = document.getElementById("pinInput");
+
+      setNormalIcon();
+      checkLockStatus();
+      updateAttemptText();
+
+      pinInput.addEventListener("input", function() {
+        this.value = this.value.replace(/[^0-9]/g, "");
+      });
+
+      pinInput.addEventListener("keydown", function(event) {
+        if (event.key === "Enter") {
+          checkPin();
+        }
+      });
+
+      setInterval(function() {
+        checkLockStatus();
+      }, 1000);
+
+      setInterval(function() {
+        updateDashboard();
+      }, 1000);
+    });
+  </script>
+
+</body>
+</html>
