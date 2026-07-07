@@ -386,6 +386,219 @@ body {
   cursor: pointer;
 }
 
+.pin-screen {
+  min-height: calc(100vh - 150px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 30px 15px;
+}
+
+.pin-card {
+  width: min(440px, 100%);
+  background: linear-gradient(145deg, #ffffff, #eef8ff);
+  border: 1px solid #b8dcff;
+  border-radius: 24px;
+  padding: 36px 30px;
+  text-align: center;
+  box-shadow: 0 20px 45px rgba(15, 61, 102, 0.2);
+  transition: 0.3s ease;
+}
+
+.lock-icon {
+  width: 84px;
+  height: 84px;
+  margin: 0 auto 17px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #e8f4ff;
+  border: 2px solid #b8dcff;
+  box-shadow: inset 0 0 0 6px rgba(255, 255, 255, 0.75);
+}
+
+.shield-shape {
+  width: 37px;
+  height: 44px;
+  position: relative;
+  background: linear-gradient(180deg, #0b5c9e, #087a57);
+  clip-path: polygon(50% 0%, 93% 15%, 87% 65%, 50% 100%, 13% 65%, 7% 15%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.keyhole {
+  width: 10px;
+  height: 15px;
+  position: relative;
+  margin-top: 8px;
+  background: white;
+  border-radius: 3px 3px 5px 5px;
+}
+
+.keyhole::before {
+  content: "";
+  position: absolute;
+  width: 13px;
+  height: 13px;
+  left: -1.5px;
+  top: -8px;
+  border-radius: 50%;
+  background: white;
+}
+
+.security-label {
+  display: inline-block;
+  margin-bottom: 12px;
+  padding: 7px 12px;
+  border-radius: 20px;
+  background: #dbeeff;
+  color: #0b4e85;
+  border: 1px solid #b8dcff;
+  font-size: 12px;
+  font-weight: bold;
+  letter-spacing: 0.8px;
+}
+
+.pin-card h2 {
+  color: #083d6b;
+  margin-bottom: 10px;
+  font-size: 27px;
+}
+
+.pin-card p {
+  color: #58728b;
+  line-height: 1.55;
+}
+
+.pin-input {
+  width: 100%;
+  margin: 22px 0 14px;
+  padding: 15px;
+  text-align: center;
+  font-size: 26px;
+  letter-spacing: 10px;
+  border: 2px solid #b8dcff;
+  border-radius: 12px;
+  outline: none;
+  color: #083d6b;
+  background: white;
+}
+
+.pin-input:focus {
+  border-color: #0b5c9e;
+  box-shadow: 0 0 0 4px rgba(11, 92, 158, 0.12);
+}
+
+.pin-btn {
+  width: 100%;
+  border: none;
+  border-radius: 10px;
+  padding: 14px;
+  background: linear-gradient(135deg, #0b5c9e, #087a57);
+  color: white;
+  font-size: 16px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.pin-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.attempt-text {
+  margin-top: 16px;
+  font-weight: bold;
+  color: #4b6d88 !important;
+}
+
+.pin-message {
+  min-height: 22px;
+  margin-top: 10px;
+  font-weight: bold;
+}
+
+.status-tick,
+.status-cross,
+.status-lock {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 27px;
+  font-weight: bold;
+}
+
+.status-tick {
+  background: #16834c;
+}
+
+.status-cross {
+  background: #c92a2a;
+}
+
+.status-lock {
+  background: #b42318;
+  font-size: 34px;
+}
+
+.pin-card.access-granted {
+  border-color: #72d7a4;
+  background: linear-gradient(145deg, #ffffff, #e8fff2);
+}
+
+.pin-card.access-granted .lock-icon {
+  background: #daf8e7;
+  border-color: #9ce0ba;
+}
+
+.pin-card.access-granted .security-label {
+  background: #daf8e7;
+  border-color: #9ce0ba;
+  color: #16834c;
+}
+
+.pin-card.access-denied {
+  border-color: #ffb8b8;
+  background: linear-gradient(145deg, #ffffff, #fff0f0);
+  animation: securityShake 0.35s ease;
+}
+
+.pin-card.access-denied .lock-icon {
+  background: #ffe0e0;
+  border-color: #ffb8b8;
+}
+
+.pin-card.access-denied .security-label,
+.pin-card.access-denied .pin-message {
+  background: #ffe0e0;
+  border-color: #ffb8b8;
+  color: #c92a2a;
+}
+
+.pin-card.access-locked {
+  border-color: #ff9d9d;
+  background: linear-gradient(145deg, #fffafa, #ffe8e8);
+}
+
+.pin-card.access-locked .lock-icon {
+  background: #ffd6d6;
+  border-color: #ff9d9d;
+}
+
+.pin-card.access-locked .security-label,
+.pin-card.access-locked .pin-message {
+  background: #ffd6d6;
+  border-color: #ff9d9d;
+  color: #b42318;
+}
+
 footer {
   text-align: center;
   padding: 20px;
@@ -402,6 +615,20 @@ footer {
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
+  }
+}
+
+@keyframes securityShake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+
+  25% {
+    transform: translateX(-8px);
+  }
+
+  75% {
+    transform: translateX(8px);
   }
 }
 
