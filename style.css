@@ -582,3 +582,20 @@ footer {
     padding: 28px 20px;
   }
   }
+
+header {
+    display: flex;
+    align-items: center;
+}
+
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.header-left img {
+    width: 70px;
+    height: 70px;
+    object-fit: contain;
+}
