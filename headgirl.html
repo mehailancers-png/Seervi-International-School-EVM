@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Head Girl Election | Seervi International School</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+  <header class="header">
+    <div>
+      <h1>SEERVI INTERNATIONAL SCHOOL</h1>
+      <p>Student Council Election EVM</p>
+    </div>
+
+    <a class="dashlink" href="dashboard.html">Counting Dashboard</a>
+  </header>
+
+  <main class="wrap">
+    <section class="box">
+
+      <div class="title">
+        <h2>Head Girl Election</h2>
+        <p>Please select one candidate only.</p>
+      </div>
+
+      <div class="note">
+        Your choice remains private. After voting, the EVM will lock for 45 seconds for the next voter.
+      </div>
+
+      <div class="grid">
+
+        <div class="candidate">
+          <div class="symbol">
+            <img src="girl1.png" alt="Khushi Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 1';">
+          </div>
+          <h3>Khushi</h3>
+          <p>Candidate for Head Girl</p>
+          <button class="vote" onclick="castVote(0)">CAST VOTE</button>
+        </div>
+
+        <div class="candidate">
+          <div class="symbol">
+            <img src="girl2.png" alt="Disha Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 2';">
+          </div>
+          <h3>Disha</h3>
+          <p>Candidate for Head Girl</p>
+          <button class="vote" onclick="castVote(1)">CAST VOTE</button>
+        </div>
+
+        <div class="candidate">
+          <div class="symbol">
+            <img src="girl3.png" alt="Meherdeep Kaur Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 3';">
+          </div>
+          <h3>Meherdeep Kaur</h3>
+          <p>Candidate for Head Girl</p>
+          <button class="vote" onclick="castVote(2)">CAST VOTE</button>
+        </div>
+
+        <div class="candidate">
+          <div class="symbol">
+            <img src="girl4.png" alt="Paridhi Symbol"
+              onerror="this.style.display='none'; this.parentElement.innerHTML='SYMBOL 4';">
+          </div>
+          <h3>Paridhi</h3>
+          <p>Candidate for Head Girl</p>
+          <button class="vote" onclick="castVote(3)">CAST VOTE</button>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- Vote success popup -->
+  <div class="overlay" id="successPopup">
+    <div class="modal">
+      <div class="shield">✓</div>
+      <h2>Vote Cast Successfully</h2>
+      <p>Your Head Girl vote has been recorded privately.</p>
+    </div>
+  </div>
+
+  <!-- 45-second lock popup -->
+  <div class="overlay" id="lockPopup">
+    <div class="modal">
+      <div class="shield">⌛</div>
+      <h2>Voting Locked</h2>
+      <p>Next voter may vote after:</p>
+      <div class="timer"><span id="lockTimer">45</span> sec</div>
+    </div>
+  </div>
+
+  <footer>
+    Seervi International School • EVM Working Model
+  </footer>
+
+  <script>
+    const HEAD_GIRL_STORAGE_KEY = "seervi_headgirl_votes";
+    const HEAD_GIRL_SESSION_KEY = "seervi_headgirl_voted";
+    const LOCK_DURATION = 45;
+
+    let lockInterval;
+
+    function setVoteButtonsDisabled(disabled, text) {
+      document.querySelectorAll(".vote").forEach(button => {
+        button.disabled = disabled;
+        if (text) button.textContent = text;
+      });
+    }
+
+    function isCurrentlyLocked() {
+      const lockEnd = Number(localStorage.getItem("seervi_evmlock_until") || 0);
+      return lockEnd > Date.now();
+    }
+
+    function showLockCountdown() {
+      const lockEnd = Number(localStorage.getItem("seervi_evmlock_until") || 0);
+      const lockPopup = document.getElementById("lockPopup");
+      const timer = document.getElementById("lockTimer");
+
+      lockPopup.classList.add("show");
+      setVoteButtonsDisabled(true, "VOTING LOCKED");
+
+      clearInterval(lockInterval);
+
+      function updateTimer() {
+        const secondsLeft = Math.max(0, Math.ceil((lockEnd - Date.now()) / 1000));
+        timer.textContent = secondsLeft;
+
+        if (secondsLeft <= 0) {
+          clearInterval(lockInterval);
+          lockPopup.classList.remove("show");
+          localStorage.removeItem("seervi_evmlock_until");
+
+          /* New voter ke liye Head Boy page par wapas */
+          sessionStorage.removeItem("seervi_headboy_voted");
+          sessionStorage.removeItem("seervi_headgirl_voted");
+
+          window.location.href = "index.html";
+        }
+      }
+
+      updateTimer();
+      lockInterval = setInterval(updateTimer, 1000);
+    }
+
+    /* Agar lock pehle se active hai, page open hote hi countdown chale */
+    if (isCurrentlyLocked()) {
+      showLockCountdown();
+    }
+
+    /* Agar current voter ne Head Girl vote already diya hai */
+    if (sessionStorage.getItem(HEAD_GIRL_SESSION_KEY) === "yes") {
+      setVoteButtonsDisabled(true, "VOTE ALREADY CAST");
+    }
+
+    function castVote(candidateIndex) {
+      if (isCurrentlyLocked()) {
+        showLockCountdown();
+        return;
+      }
+
+      if (sessionStorage.getItem(HEAD_GIRL_SESSION_KEY) === "yes") {
+        return;
+      }
+
+      let votes = JSON.parse(localStorage.getItem(HEAD_GIRL_STORAGE_KEY)) || [0, 0, 0, 0];
+
+      votes[candidateIndex] = votes[candidateIndex] + 1;
+
+      localStorage.setItem(HEAD_GIRL_STORAGE_KEY, JSON.stringify(votes));
+      sessionStorage.setItem(HEAD_GIRL_SESSION_KEY, "yes");
+
+      setVoteButtonsDisabled(true, "VOTE CAST");
+
+      document.getElementById("successPopup").classList.add("show");
+
+      setTimeout(() => {
+        document.getElementById("successPopup").classList.remove("show");
+
+        const lockEnd = Date.now() + (LOCK_DURATION * 1000);
+        localStorage.setItem("seervi_evmlock_until", lockEnd);
+
+        showLockCountdown();
+      }, 1300);
+    }
+  </script>
+
+</body>
+</html>
